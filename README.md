@@ -1,33 +1,4 @@
-
-
 **TEST TECNICO AI ENGINEER**
-
-
-# Indice {#indice .TOC-Heading}
-
-[1 Introduzione [4](#introduzione)](#introduzione)
-
-[1.1 Materiale fornito [4](#materiale-fornito)](#materiale-fornito)
-
-[2 Specifiche [4](#specifiche)](#specifiche)
-
-[API [4](#_Toc220343238)](#_Toc220343238)
-
-[2.1 INPUT [4](#input)](#input)
-
-[2.2 OUTPUT [5](#output)](#output)
-
-[2.3 DATABASE [5](#database)](#database)
-
-[2.4 DOCKER [5](#docker)](#docker)
-
-[3 Operatività [6](#operatività)](#operatività)
-
-[3.1 Requisiti [6](#requisiti)](#requisiti)
-
-[4 Consegna [6](#consegna)](#consegna)
-
-[5 Valutazione [6](#valutazione)](#valutazione)
 
 # Introduzione
 
@@ -42,16 +13,14 @@ Il compito è quello creare un\'architettura API robusta che possa gestire alti 
 Insieme a questo documento viene fornito:
 
 - Model.pkl: il classificatore RandomForestClassifier in formato pickle (fatto tramite Scikit-Learn)
-
 - Allegato A (Training Report): Documento tecnico contenente le logiche di preprocessing e business fondamentali.
-
 - Requirements.txt: Dipendenze di base
 
 # Specifiche
 
 Deve essere creata una API scritta in FastAPI containerizzata che esponga un endpoint
 
-**POST /predict.**
+> **POST /predict**
 
 E' necessario andare a replicare le logiche descritte nell'Allegato A per poter effettuare le prediction in modo corretto.
 
@@ -64,36 +33,57 @@ Il sistema deve essere orchestrato tramite Docker Compose e includere un databas
 E' un endpoint in modalità POST che prende in input il seguente formato di dati (in formato JSON), per un processamento singolo e a batch (fino a 1000 record in una sola chiamata):
 
 caso singolo:
-
-{\"nome\": \"Mario\", \"eta\": 30, \"cliente_attivo\": \"SI\"}
+``` JSON
+{
+    "nome": "Mario",
+    "eta": 30,
+    "cliente_attivo": "SI"
+}
+```
 
 caso batch:
 
-\[
-
-{\"nome\": \"A\", \"eta\": 20, \"cliente_attivo\": \"NO\"},
-
-{\"nome\": \"B\", \"eta\": 50, \"cliente_attivo\": \"SI\"}
-
-\]
+``` JSON
+[
+    {
+        "nome": "A",
+        "eta": 20,
+        "cliente_attivo": "NO"
+    },
+    {
+        "nome": "B",
+        "eta": 50,
+        "cliente_attivo": "SI"
+    }
+] 
+```
 
 ## OUTPUT
 
 In output ci si aspetta un JSON (per il caso singolo) o una lista di JSON (per il caso batch) con il seguente formato
 
 Caso singolo:
+``` JSON
+{
+    "probability": 0.2134,
+    "label": "OK"
+}
+```
 
-{\"probability\": 0.2134, \"label\": \"OK\"}
 
 Caso batch:
-
-\[
-
-{\"probability\": 0.2134, \"label\": \"OK\"},
-
-{\"probability\": 0.0134, \"label\": \"NO_ACQUISTO\"}
-
-\]
+``` JSON
+[
+    {
+        "probability": 0.2134,
+        "label": "OK"
+    },
+    {
+        "probability": 0.0134,
+        "label": "NO_ACQUISTO"
+    }
+]
+```
 
 I possibili valori della "label" sono OK e NO_ACQUISTO
 
@@ -104,9 +94,7 @@ Ogni richiesta deve essere salvata su un database MongoDB. La persistenza dei do
 Sul database dovranno essere salvate le seguenti informazioni:
 
 - timestamp: data della predizione
-
 - input_data: Dati di input della richiesta di predizione
-
 - output_data: Dati di output della richiesta
 
 È possibile andare ad utilizzare la forma che più si ritiene opportuna, basta che siano presenti le informazioni precedentemente illustrate.
@@ -118,21 +106,17 @@ Il candidato dovrà fornire un Dockerfile compose che permetta di eseguire l'app
 Il compose deve contenere:
 
 - Il servizio API
-
 - Il database MongoDB
-
 - Comunicazione di rete affinché i servizi comunichino e il servizio API sia esposto sulla porta 5000
+
 
 # Operatività
 
 ## Requisiti
 
 - Deve essere usato Python 3.11+
-
 - Usare un framework a scelta tra FastAPI
-
 - Il salvataggio dei dati deve essere fatto su MongoDB
-
 - Il servizio dovrà esporre la porta operativa 5000
 
 # Consegna
@@ -144,9 +128,7 @@ La consegna deve avvenire al più una settimana dopo dalla consegna del test. De
 Il test verrà valutato secondo i seguenti criteri:
 
 - Correttezza del codice generato
-
 - Qualità del codice stesso (organizzazione, commenti, test, ecc)
-
 - Performance generali
-
-- Correttezza delle assunzioni riguardanti la pipeline di ML (preprocessing dei dati, prediction, caricamento del modello, ...)
+- Correttezza delle assunzioni riguardanti la pipeline di ML 
+(preprocessing dei dati, prediction, caricamento del modello, ...)
